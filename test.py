@@ -1,7 +1,12 @@
 import pandas
 import numpy as np
 
-pd = pandas.read_csv(r"./data/test1.csv")
-array = np.array(pd)
-#print(pd._ixs(6,2)) #获取一列
-print(array)
+test = {}
+temp = {}
+for i in range(6):
+    test[i] = temp
+for i in range(6):
+    for j in range(10,16):
+        test[i][j]=99
+
+print(test)

@@ -1,7 +1,8 @@
 import csv
 import pandas as pd
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
+
 NAN = 99999999.0
 data_path = r"./data/11data.csv"
 """
@@ -49,9 +50,11 @@ def getEveryItemAcc(kind_64_dict, wholeList, kind_index):
     for row in wholeList:
         col_location = 0
         for col in row:
+            print("-----------------",kind_index[col_location],"的",[col],"添加了",int(row[46]),"---------------------")
             kind_64_dict[kind_index[col_location]][col] = \
                 kind_64_dict[kind_index[col_location]].get(col, 0) + int(row[46])
             col_location += 1
+    print(kind_64_dict)
     return kind_64_dict
 
 
@@ -67,15 +70,23 @@ def draw(kind_64_dict, name_list):
     #         writer.writerow([name])
     #         for key in kind_64_dict[name].keys():
     #             writer.writerow([key, kind_64_dict[name][key]])
+    index = 1
     for name in name_list:
         x_ = []
         y_ = []
-        sorted(kind_64_dict[name].keys())
+        # sorted(kind_64_dict[name].keys())
+
         for key in kind_64_dict[name].keys():
             x_.append(key)
             y_.append(kind_64_dict[name][key])
-            plt.plot(x_,y_)
-            plt.show()
+            print(key)
+            print(name)
+        plt.subplot(1000, 1000, index)
+        plt.plot(x_, y_)
+        plt.title(name)
+        index += 1
+        print("------------------------------------------------------------",index)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -88,9 +99,10 @@ if __name__ == "__main__":
 
     # print(whole_list)
     kind_64_dict = getEveryItemAcc(kind_64_dict, whole_list, kind_index)
+
     # print(kind_64_dict)
     name_keys = kind_64_dict.keys()
     # print(name_keys)
     name_list = list(name_keys)
     # print(name_list)
-    draw(kind_64_dict, name_list)
+    #draw(kind_64_dict, name_list)
