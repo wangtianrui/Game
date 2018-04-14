@@ -1,7 +1,7 @@
+import pandas
 import numpy as np
 
-array = [["sd", 1, 2, 3, 4],
-         ["hello", 5, 6, 7, 8]]
-array = np.array(array)
-for i in range(3):
-    print(array[:, i])
+pd = pandas.read_csv(r"./data/test1.csv")
+array = np.array(pd)
+#print(pd._ixs(6,2)) #获取一列
+print(array)
