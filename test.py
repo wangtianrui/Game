@@ -1,12 +1,9 @@
-import pandas
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import mlab
+from matplotlib import rcParams
 
-test = {}
-temp = {}
-for i in range(6):
-    test[i] = temp
-for i in range(6):
-    for j in range(10,16):
-        test[i][j]=99
-
-print(test)
+x_ = ["wind", "cloud", "tur", "1", "sd"]
+y_ = [1, 2, 3, 4, 6]
+if 1 in y_:
+    print("ok")
