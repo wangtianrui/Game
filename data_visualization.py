@@ -30,7 +30,6 @@ def getNameDict(wholeList):
     :param wholeList:
     :return:
     """
-
     kind_64_dict = {}
     kind_index = {}
 
@@ -46,6 +45,7 @@ def getNameDict(wholeList):
 
 
 def getEveryItemAcc(kind_64_dict, wholeList, kind_index):
+
     # 第47个是label，也就是46index
     add_count = 0
     for row in wholeList:
@@ -82,33 +82,33 @@ def draw(kind_64_dict, name_list):
     #         writer.writerow([name])
     #         for key in kind_64_dict[name].keys():
     #             writer.writerow([key, kind_64_dict[name][key]])
-    test_names = ["zip_code", "total_rev_hi_lim", "total_rec_int", "total_bal_il", "tot_cur_bal", "revol_util",
-                  "open_rv_12m","mths_since_rcnt_il", "id", "dti_joint", "addr_state"]
+    # test_names = ["zip_code", "total_rev_hi_lim", "total_rec_int", "total_bal_il", "tot_cur_bal", "revol_util",
+    #               "open_rv_12m","mths_since_rcnt_il", "id", "dti_joint", "addr_state"]
     for name in name_list:
         index = 1
         # sorted(kind_64_dict[name].keys())
         x_ = []
         y_ = []
-        if name in test_names:
-            try:
-                sorted(kind_64_dict[name].items(), key=lambda e: e[0])
-                for key in kind_64_dict[name].keys():
-                    x_.append(key)
-                    y_.append(kind_64_dict[name][key])
-                    # print(key,":",kind_64_dict[name][key])
+        # if name in test_names:
+        try:
+            sorted(kind_64_dict[name].items(), key=lambda e: e[0])
+            for key in kind_64_dict[name].keys():
+                x_.append(key)
+                y_.append(kind_64_dict[name][key])
+                # print(key,":",kind_64_dict[name][key])
 
-                plt.subplot(1, 2, index)
-                plt.scatter(x_, y_, s=10)
-                index += 1
-                plt.subplot(1, 2, index)
-                plt.xticks(np.arange(len(x_)), x_)
-                rects = plt.bar(np.arange(len(x_)), y_, width=0.8)
-                plt.title(name)
-                plt.show()
-            except BaseException:
-                print(name, "error")
-        else:
-            print(name,"is not exist")
+            plt.subplot(1, 2, index)
+            plt.scatter(x_, y_, s=10)
+            index += 1
+            plt.subplot(1, 2, index)
+            plt.xticks(np.arange(len(x_)), x_)
+            rects = plt.bar(np.arange(len(x_)), y_, width=0.8)
+            plt.title(name)
+            plt.show()
+        except BaseException:
+            print(name, "error")
+            # else:
+            #     print(name,"is not exist")
 
 
 if __name__ == "__main__":
