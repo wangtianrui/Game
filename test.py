@@ -8,6 +8,8 @@ from matplotlib import rcParams
 # if 1 in y_:
 #     print("ok")
 
-a = "08"
+a = np.array([1,2,3,4,5])
+b = np.delete(a,2)
 
-print(int(a))
+print(a)
+print(b)

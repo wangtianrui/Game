@@ -154,6 +154,47 @@ if __name__ == "__main__":
             temp += 1
         database[row].append(dict[whole_list[row][19]])
 
+    # zip
+    temp = 0
+    for row in range(len(whole_list)):
+        dict[whole_list[row][20]] = dict.get(whole_list[row][20], -1)
+        if dict[whole_list[row][20]] == -1:
+            dict[whole_list[row][20]] = temp
+            temp += 1
+        database[row].append(dict[whole_list[row][20]])
 
-    #print(len(set(test)))
+    # add_states
+    for row in range(len(whole_list)):
+        front = ord(whole_list[row][21][0])-64
+        #print(front)
+        back = ord(whole_list[row][21][1])-64
+        #print(back)
+        database[row].append(int(str(front) + str(back)))
+
+
+    #dit
+    for row in range(len(whole_list)):
+        database[row].append(whole_list[row][22])
+
+
+    #earliest
+    dict = {'Sep': 9, 'Mar': 3, 'Dec': 12, 'Feb': 2, 'May': 5, 'Apr': 4, 'Jun': 6, 'Nov': 11, 'Aug': 8, 'Jan': 1,
+            'Jul': 7, 'Oct': 10}
+    for row in range(len(whole_list)):
+        temp = whole_list[row][23]
+        yue = dict[temp[:3]]
+        ri = int(temp[4:])
+        database[row].append(int(str(yue) + str(ri)))
+
+    #pub_rec
+    for row in range(len(whole_list)):
+        temp = whole_list[row][25]
+        database[row].append(temp)
+
+    #revol_bal
+    for row in range(len(whole_list)):
+        temp = whole_list[row][26]
+        database[row].append(temp)
+
+    # print(set(test))
     print(database)
