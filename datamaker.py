@@ -33,7 +33,7 @@ if __name__ == "__main__":
     data_path = r"E:\python_programes\PingAnGame\data\11data.csv"
     whole_list = readData(data_path)
     kind_64_dict, kind_index = getNameDict(whole_list)
-    print(kind_64_dict)
+    # print(kind_64_dict)
     whole_list = np.array(whole_list)
     database = []
     # 前三列
@@ -83,13 +83,77 @@ if __name__ == "__main__":
             print("2")
             back
         database[row].append(dict.get(whole_list[row][9]))
-    #print(database)
-    #就业时间长短
-    test = []
+    # print(database)
+    # 就业时间长短
+    dict = {'6 years': 6, '2 years': 2, '8 years': 8, '4 years': 4, '5 years': 5, '< 1 year': 0, '7 years': 7,
+            ' ': 100, '9 years': 9, '10+ years': 10, '3 years': 3, '1 year': 1}
     for row in range(len(whole_list)):
-        dict = {'6 years', '2 years', '8 years', '4 years', '5 years', '< 1 year', '7 years', '9 years', '10+ years', '3 years', '1 year'}
-        print(whole_list[row][10])
-        test.append(whole_list[row][10])
-        #database[row].append(dict.get(whole_list[row][9]))
-    set = set(test)
-    print(set)
+        temp = dict[whole_list[row][10]]
+        database[row].append(temp)
+    # print(database)
+    #    print(whole_list[row][10])
+    #     test.append(whole_list[row][10])
+    #     if whole_list[row][10] == ' ':
+    #         count += 1
+    #         # database[row].append(dict.get(whole_list[row][9]))
+    # set = set(test)
+    # print(set)
+    # print(count)
+    # 房屋所有情况
+    dict = {"MORTGAGE": 0, "RENT": 50, "OWN": 100, "OTHER": 150}
+    for row in range(len(whole_list)):
+        temp = dict[whole_list[row][11]]
+        database[row].append(temp)
+    # 年收入
+    for row in range(len(whole_list)):
+        temp = whole_list[row][12]
+        database[row].append(temp)
+    # test = []
+    # 信用是否核实
+    dict = {'Source Verified': 0, 'Verified': 50, 'Not Verified': 100}
+    for row in range(len(whole_list)):
+        temp = whole_list[row][13]
+        database[row].append(dict[temp])
+    # 申请日期
+    test = []
+    dict = {'Sep': 9, 'Mar': 3, 'Dec': 12, 'Feb': 2, 'May': 5, 'Apr': 4, 'Jun': 6, 'Nov': 11, 'Aug': 8, 'Jan': 1,
+            'Jul': 7, 'Oct': 10}
+    for row in range(len(whole_list)):
+        temp = whole_list[row][14]
+        yue = dict[temp[:3]]
+        ri = int(temp[4:])
+        database[row].append(int(str(yue) + str(ri)))
+    # 贷款现状
+    dict = {'Does not meet the credit policy. Status:Charged Off': 0, 'Issued': 1, 'Current': 2, 'Charged Off': 3,
+            'In Grace Period': 4, 'Late (16-30 days)': 5, 'Default': 10,
+            'Does not meet the credit policy. Status:Fully Paid': 8,
+            'Fully Paid': 6, 'Late (31-120 days)': 7}
+    for row in range(len(whole_list)):
+        temp = whole_list[row][15]
+        database[row].append(dict[whole_list[row][15]])
+
+        # database[row].append(int(str(yue) + str(ri)))
+    # purpose
+    test = []
+    dict = {'vacation': 0, 'credit_card': 1, 'house': 2, 'medical': 3, 'wedding': 4, 'major_purchase': 5,
+            'renewable_energy': 6,
+            'educational': 7, 'car': 8, 'debt_consolidation': 9, 'moving': 10, 'small_business': 11,
+            'home_improvement': 12, 'other': 13}
+    for row in range(len(whole_list)):
+        temp = whole_list[row][18]
+        database[row].append(dict[temp])
+
+    # title
+    test = []
+    dict = {}
+    temp = 0
+    for row in range(len(whole_list)):
+        dict[whole_list[row][19]] = dict.get(whole_list[row][19], -1)
+        if dict[whole_list[row][19]] == -1:
+            dict[whole_list[row][19]] = temp
+            temp += 1
+        database[row].append(dict[whole_list[row][19]])
+
+
+    #print(len(set(test)))
+    print(database)

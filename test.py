@@ -8,6 +8,6 @@ from matplotlib import rcParams
 # if 1 in y_:
 #     print("ok")
 
-a = {"w":1}
+a = "08"
 
-print(a["r"])
+print(int(a))
