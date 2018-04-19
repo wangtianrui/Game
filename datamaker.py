@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import csv
 
 
 def readData(datapath):
@@ -26,13 +27,13 @@ def getNameDict(wholeList):
         index += 1
         kind_64_dict[i] = {}  # 注意python里都是引用，所以这里如果用temp来初始化的话，会出现一改全改的情况
     # print(kind_64_dict)
-    return kind_64_dict, kind_index
+    return kind_64_dict, kind_index, namelist
 
 
 if __name__ == "__main__":
     data_path = r"E:\python_programes\PingAnGame\data\11data.csv"
     whole_list = readData(data_path)
-    kind_64_dict, kind_index = getNameDict(whole_list)
+    kind_64_dict, kind_index, nameList = getNameDict(whole_list)
     # print(kind_64_dict)
     whole_list = np.array(whole_list)
     database = []
@@ -165,19 +166,17 @@ if __name__ == "__main__":
 
     # add_states
     for row in range(len(whole_list)):
-        front = ord(whole_list[row][21][0])-64
-        #print(front)
-        back = ord(whole_list[row][21][1])-64
-        #print(back)
+        front = ord(whole_list[row][21][0]) - 64
+        # print(front)
+        back = ord(whole_list[row][21][1]) - 64
+        # print(back)
         database[row].append(int(str(front) + str(back)))
 
-
-    #dit
+    # dit
     for row in range(len(whole_list)):
         database[row].append(whole_list[row][22])
 
-
-    #earliest
+    # earliest
     dict = {'Sep': 9, 'Mar': 3, 'Dec': 12, 'Feb': 2, 'May': 5, 'Apr': 4, 'Jun': 6, 'Nov': 11, 'Aug': 8, 'Jan': 1,
             'Jul': 7, 'Oct': 10}
     for row in range(len(whole_list)):
@@ -186,15 +185,89 @@ if __name__ == "__main__":
         ri = int(temp[4:])
         database[row].append(int(str(yue) + str(ri)))
 
-    #pub_rec
+    # pub_rec
     for row in range(len(whole_list)):
         temp = whole_list[row][25]
         database[row].append(temp)
 
-    #revol_bal
+    # revol_bal
     for row in range(len(whole_list)):
         temp = whole_list[row][26]
         database[row].append(temp)
 
+    # revol_util
+    for row in range(len(whole_list)):
+        temp = whole_list[row][27]
+        database[row].append(temp)
+    # total_acc
+    for row in range(len(whole_list)):
+        temp = whole_list[row][28]
+        database[row].append(temp)
+    # initial_list
+    for row in range(len(whole_list)):
+        temp = ord(whole_list[row][29]) - 96
+        database[row].append(temp)
+    # out_prncp
+    for row in range(len(whole_list)):
+        temp = (whole_list[row][30] + whole_list[row][31]) / 2
+        database[row].append(temp)
+    # total_pymnt
+    for row in range(len(whole_list)):
+        temp = (whole_list[row][32] + whole_list[row][33]) / 2
+        database[row].append(temp)
+    # total_rec_prncp
+    for row in range(len(whole_list)):
+        temp = whole_list[row][34]
+        database[row].append(temp)
+    # roral_rec_int~policy_code
+    for row in range(len(whole_list)):
+        temp = whole_list[row][35]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][36]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][37]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][38]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][39]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][40]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][41]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][47]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][48]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][60]
+        database[row].append(temp)
     # print(set(test))
-    print(database)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][46]
+        database[row].append(temp)
+
+    with open(r"./data/wang_data.csv", "w", newline="") as f:
+        # for i in database:
+        #     for temp in database:
+        #         f.write(temp)
+        #         f.write("\t")
+        #     f.write("\n")
+        writer = csv.writer(f)
+        writer.writerow(
+            [nameList[1], nameList[4], nameList[5], nameList[6], nameList[7], nameList[8], nameList[9], nameList[10],
+             nameList[11], nameList[12], nameList[13], nameList[14], nameList[15], nameList[18], nameList[19],
+             nameList[20], nameList[21], nameList[22], nameList[23], nameList[25], nameList[26], nameList[27],
+             nameList[28], nameList[29], nameList[30], nameList[32], nameList[34], nameList[35], nameList[36],
+             nameList[37]
+                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],nameList[46]])
+        for i in database:
+            writer.writerow(i)
