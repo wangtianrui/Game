@@ -4,6 +4,7 @@ import numpy as np
 import random
 from sklearn.preprocessing import StandardScaler
 import os
+from sklearn import preprocessing
 
 num_class = 2
 batch_size = 20
@@ -115,13 +116,23 @@ def train():
         if i % 100 == 0:
             x, y, indexs = makeData(whole_data, "train")
             test_x, test_y, test_index = makeData(test_data, "test")
+
+            #归一化
+            min_max_scaler = preprocessing.MinMaxScaler()
+            x = min_max_scaler.fit_transform(x)
+
+            # 标准化
             ss_x = StandardScaler()
             ss_y = StandardScaler()
-
             x = ss_x.fit_transform(x)
             y = ss_y.fit_transform(y)
+            print("x:", x)
             test_x = ss_x.transform(test_x)
+            #print("test x:", x)
             test_y = ss_y.transform(test_y)
+
+
+
 
             # x = tf.reshape(x, shape=[batch_size, size])
             # x = tf.cast(x, dtype=tf.float32)
