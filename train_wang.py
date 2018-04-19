@@ -7,9 +7,10 @@ import os
 from sklearn import preprocessing
 
 num_class = 2
-batch_size = 20
+batch_size = 50
 train_path = r"./data/wang_data.csv"
-test_path = r"./data/wang_data_test.csv"
+test_path = r"./data/wang_data_test5000.csv"
+test_path11 =r"./data/wang_data_test.csv"
 learning_rate = 0.0000001
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -48,9 +49,19 @@ def makeData(data, flag):
             row = np.delete(row, 37)
             x.append(row)
             ran.append(index)
+    elif flag == "11":
+        for i in range(batch_size):
+            index = random.randint(0, 190)
+            # print("test data len", len(data))
+            row = data[index]
+            label = [int(row[37])]
+            y.append(label)
+            row = np.delete(row, 37)
+            x.append(row)
+            ran.append(index)
     else:
         for i in range(batch_size):
-            index = random.randint(0, 66)
+            index = random.randint(0, 4990)
             # print("test data len", len(data))
             row = data[index]
             label = [int(row[37])]
@@ -81,12 +92,18 @@ def fc(input, keep_prob):
     fc1_w = getWeight([size, 128])
     fc1_b = getBias([128])
     fc1 = tf.nn.relu(tf.matmul(input, fc1_w) + fc1_b)
-    h_fc1_drop = tf.nn.dropout(fc1, keep_prob)
-    fc2_w = getWeight([128, 2])
-    fc2_b = getBias([2])
-    fc2 = tf.matmul(h_fc1_drop, fc2_w) + fc2_b
 
-    return fc2, fc1_w, fc2_w
+    fc2_w = getWeight([128, 512])
+    fc2_b = getBias([512])
+    fc2 = tf.nn.relu(tf.matmul(fc1, fc2_w) + fc2_b)
+
+    h_fc1_drop = tf.nn.dropout(fc2, keep_prob)
+    fc3_w = getWeight([512, 2])
+    fc3_b = getBias([2])
+    fc3 = tf.matmul(h_fc1_drop, fc3_w) + fc3_b
+
+
+    return fc3, fc1_w, fc2_w
 
 
 def cross_entropy(fc_result, label):
@@ -111,13 +128,20 @@ def train():
     saver = tf.train.Saver(tf.global_variables())
     whole_data = readData(train_path)
     test_data = readData(test_path)
+    test_data11 = readData(test_path11)
     # whole_data = sess.run(read_data)
     for i in range(3000000):
         if i % 100 == 0:
+            index = 0
             x, y, indexs = makeData(whole_data, "train")
-            test_x, test_y, test_index = makeData(test_data, "test")
+            if random.randint(0,10) < 5 :
+              index = 5000
+              test_x, test_y, test_index = makeData(test_data, "5000")
+            else:
+              index = 200
+              test_x, test_y, test_index = makeData(test_data11, "11")
 
-            #归一化
+            # 归一化
             min_max_scaler = preprocessing.MinMaxScaler()
             x = min_max_scaler.fit_transform(x)
 
@@ -126,13 +150,12 @@ def train():
             ss_y = StandardScaler()
             x = ss_x.fit_transform(x)
             y = ss_y.fit_transform(y)
-            print("x:", x)
+            #print("x:", x)
+
+            test_x = min_max_scaler.transform(test_x)
             test_x = ss_x.transform(test_x)
-            #print("test x:", x)
+            # print("test x:", x)
             test_y = ss_y.transform(test_y)
-
-
-
 
             # x = tf.reshape(x, shape=[batch_size, size])
             # x = tf.cast(x, dtype=tf.float32)
@@ -141,7 +164,7 @@ def train():
             # f1w = sess.run(fc1, feed_dict={x_: x, y_: y, keep_prob: 1})
             # f2w = sess.run(fc2, feed_dict={x_: x, y_: y, keep_prob: 1})
             # print("f1:",f1w,"\n","f2:",f2w)
-            print("step %d, train accuracy %g , loss %g" % (i, train_accuracy, lo))
+            print("step %d, train accuracy %g , loss %g , this testdataset:%d" % (i, train_accuracy, lo,index))
             # print(indexs)
         if i % 5000 == 0 and i != 0:
             save_path = os.path.join(log_path, "model.ckpt")

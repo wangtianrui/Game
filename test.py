@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import mlab
 from matplotlib import rcParams
 import tensorflow as tf
-from sklearn.model_selection import cross_val_score
+
 #
 # x_ = ["wind", "cloud", "tur", "1", "sd"]
 # y_ = [1, 2, 3, 4, 6]
