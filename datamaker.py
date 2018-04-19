@@ -1,7 +1,29 @@
 import csv
-
+import pickle
 import numpy as np
 import pandas as pd
+
+maker_dicts = {}
+
+
+def pickle_save(maker_dicts):
+    """
+    保存maker字典
+    :return:
+    """
+    f = open("./data/maker.txt", "wb")
+    pickle.dump(maker_dicts, f)
+    f.close()
+
+
+def pickle_load():
+    """
+    读取字典
+    :return:
+    """
+    f = open("./data/maker.txt", "rb")
+    maker_dicts = pickle.load(f)
+    return maker_dicts
 
 
 def readData(datapath):
@@ -75,16 +97,16 @@ if __name__ == "__main__":
     # print(database)
     # 岗位
     temp = 0
+    dict = {}
     for row in range(len(whole_list)):
-        dict = {}
         dict[whole_list[row][9]] = dict.get(whole_list[row][9], -1)
         if dict[whole_list[row][9]] == -1:
             dict[whole_list[row][9]] = temp
             temp += 2
         else:
-            print("2")
-            back
+            print("9 error")
         database[row].append(dict.get(whole_list[row][9]))
+    maker_dicts[9] = dict
     # print(database)
     # 就业时间长短
     dict = {'6 years': 6, '2 years': 2, '8 years': 8, '4 years': 4, '5 years': 5, '< 1 year': 0, '7 years': 7,
@@ -154,17 +176,22 @@ if __name__ == "__main__":
         if dict[whole_list[row][19]] == -1:
             dict[whole_list[row][19]] = temp
             temp += 1
+        else:
+            print("19 error")
         database[row].append(dict[whole_list[row][19]])
-
+    maker_dicts[19] = dict
     # zip
     temp = 0
+    dict = {}
     for row in range(len(whole_list)):
         dict[whole_list[row][20]] = dict.get(whole_list[row][20], -1)
         if dict[whole_list[row][20]] == -1:
             dict[whole_list[row][20]] = temp
             temp += 1
+        else:
+            print("20 error")
         database[row].append(dict[whole_list[row][20]])
-
+    maker_dicts[20] = dict
     # add_states
     for row in range(len(whole_list)):
         front = ord(whole_list[row][21][0]) - 64
@@ -256,12 +283,9 @@ if __name__ == "__main__":
         temp = whole_list[row][46]
         database[row].append(temp)
 
-    with open(r"./data/wang_data.csv", "w", newline="") as f:
-        # for i in database:
-        #     for temp in database:
-        #         f.write(temp)
-        #         f.write("\t")
-        #     f.write("\n")
+    #print(database)
+    #print(maker_dicts)
+    with open(r"./data/wang_data.csv", "wb", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(
             [nameList[1], nameList[4], nameList[5], nameList[6], nameList[7], nameList[8], nameList[9], nameList[10],
@@ -269,6 +293,9 @@ if __name__ == "__main__":
              nameList[20], nameList[21], nameList[22], nameList[23], nameList[25], nameList[26], nameList[27],
              nameList[28], nameList[29], nameList[30], nameList[32], nameList[34], nameList[35], nameList[36],
              nameList[37]
-                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],nameList[46]])
+                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],
+             nameList[46]])
         for i in database:
             writer.writerow(i)
+
+    pickle_save(maker_dicts)

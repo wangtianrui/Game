@@ -7,7 +7,7 @@ import os
 from sklearn import preprocessing
 
 num_class = 2
-batch_size = 50
+batch_size = 40
 train_path = r"./data/wang_data.csv"
 test_path = r"./data/wang_data_test5000.csv"
 test_path11 =r"./data/wang_data_test.csv"
@@ -74,7 +74,6 @@ def makeData(data, flag):
     # print("len x1:",len(x[1]))
     # x = tf.reshape(x, shape=[batch_size, size])
     # label = tf.reshape(label, shape=[batch_size, 2])
-
     return x, y, ran
 
 
