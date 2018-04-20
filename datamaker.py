@@ -14,14 +14,12 @@ def pickle_save(maker_dicts):
     f.close()
 
 
-
-
 def pickle_load(path):
     """
     读取字典
     :return:
     """
-    #f = open("./data/maker.txt", "rb")
+    # f = open("./data/maker.txt", "rb")
     f = open(path, "rb")
     maker_dicts = pickle.load(f)
     return maker_dicts
@@ -56,7 +54,7 @@ def getNameDict(wholeList):
 
 if __name__ == "__main__":
     maker_dicts = pickle_load("./data/makerDict.txt")
-    data_path = r"E:\python_programes\PingAnGame\data\5000test2.csv"
+    data_path = r"E:\python_programes\PingAnGame\data\test.csv"
     whole_list = readData(data_path)
     kind_64_dict, kind_index, nameList = getNameDict(whole_list)
     # print(kind_64_dict)
@@ -100,8 +98,11 @@ if __name__ == "__main__":
     # 岗位
     temp = 0
     dict = maker_dicts[9]
-    for row in range(len(whole_list)):
-        database[row].append(dict[whole_list[row][9]])
+    try:
+        for row in range(len(whole_list)):
+            database[row].append(dict[whole_list[row][9]])
+    except KeyError:
+        database[row].append(1)
 
     # print(database)
     # 就业时间长短
@@ -120,7 +121,7 @@ if __name__ == "__main__":
     # print(set)
     # print(count)
     # 房屋所有情况
-    dict = {"MORTGAGE": 0, "RENT": 50, "OWN": 100, "OTHER": 150 ,"ANY":200}
+    dict = {"MORTGAGE": 0, "RENT": 50, "OWN": 100, "OTHER": 150, "ANY": 200, "NONE": 250}
     for row in range(len(whole_list)):
         temp = dict[whole_list[row][11]]
         database[row].append(temp)
@@ -167,14 +168,21 @@ if __name__ == "__main__":
     test = []
     dict = maker_dicts[19]
     temp = 0
-    for row in range(len(whole_list)):
-        database[row].append(dict[whole_list[row][19]])
+    try:
+        for row in range(len(whole_list)):
+            database[row].append(dict[whole_list[row][19]])
+    except KeyError:
+        database[row].append(1)
 
     # zip
     temp = 0
     dict = maker_dicts[20]
-    for row in range(len(whole_list)):
-        database[row].append(dict[whole_list[row][20]])
+    try:
+        for row in range(len(whole_list)):
+            database[row].append(dict[whole_list[row][20]])
+    except KeyError:
+        print(whole_list[row][20])
+        database[row].append(233)
 
     # add_states
     for row in range(len(whole_list)):
@@ -198,7 +206,7 @@ if __name__ == "__main__":
             yue = dict[temp[:3]]
             ri = int(temp[4:])
             database[row].append(int(str(yue) + str(ri)))
-    except TypeError :
+    except TypeError:
         database[row].append(0)
 
     # pub_rec
@@ -258,32 +266,32 @@ if __name__ == "__main__":
         temp = whole_list[row][41]
         database[row].append(temp)
     for row in range(len(whole_list)):
+        temp = whole_list[row][46]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
         temp = whole_list[row][47]
         database[row].append(temp)
     for row in range(len(whole_list)):
-        temp = whole_list[row][48]
-        database[row].append(temp)
-    for row in range(len(whole_list)):
-        temp = whole_list[row][60]
+        temp = whole_list[row][59]
         database[row].append(temp)
     # print(set(test))
     for row in range(len(whole_list)):
         temp = whole_list[row][46]
         database[row].append(temp)
 
-    #print(database)
-    #print(maker_dicts)
-    with open(r"./data/wang_data_test5500.csv", "w", newline="") as f:
+    # print(database)
+    # print(maker_dicts)
+    with open(r"./data/wang_test.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(
+
             [nameList[1], nameList[4], nameList[5], nameList[6], nameList[7], nameList[8], nameList[9], nameList[10],
              nameList[11], nameList[12], nameList[13], nameList[14], nameList[15], nameList[18], nameList[19],
              nameList[20], nameList[21], nameList[22], nameList[23], nameList[25], nameList[26], nameList[27],
              nameList[28], nameList[29], nameList[30], nameList[32], nameList[34], nameList[35], nameList[36],
              nameList[37]
-                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],
-             nameList[46]])
+                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[46], nameList[47], nameList[59]])
         for i in database:
             writer.writerow(i)
 
-    #pickle_save(maker_dicts)
+            # pickle_save(maker_dicts)

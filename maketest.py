@@ -56,7 +56,7 @@ if __name__ == "__main__":
     maker_dicts = pickle_load()
     # print(maker_dicts)
     # exit(0)
-    data_path = r"E:\python_programes\PingAnGame\data\test5500.csv"
+    data_path = r"E:\python_programes\PingAnGame\data\test.csv"
     whole_list = readData(data_path)
     kind_64_dict, kind_index, nameList = getNameDict(whole_list)
     # print(kind_64_dict)
@@ -268,20 +268,16 @@ if __name__ == "__main__":
         temp = whole_list[row][41]
         database[row].append(temp)
     for row in range(len(whole_list)):
+        temp = whole_list[row][46]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
         temp = whole_list[row][47]
         database[row].append(temp)
     for row in range(len(whole_list)):
-        temp = whole_list[row][48]
-        database[row].append(temp)
-    for row in range(len(whole_list)):
-        temp = whole_list[row][60]
-        database[row].append(temp)
-    # print(set(test))
-    for row in range(len(whole_list)):
-        temp = whole_list[row][46]
+        temp = whole_list[row][59]
         database[row].append(temp)
 
-    with open(r"./data/wang_data_test200.csv", "w", newline="") as f:
+    with open(r"./data/wang_test.csv", "w", newline="") as f:
         # for i in database:
         #     for temp in database:
         #         f.write(temp)
@@ -295,7 +291,7 @@ if __name__ == "__main__":
              nameList[20], nameList[21], nameList[22], nameList[23], nameList[25], nameList[26], nameList[27],
              nameList[28], nameList[29], nameList[30], nameList[32], nameList[34], nameList[35], nameList[36],
              nameList[37]
-                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],
+                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[4], nameList[48], nameList[60],
              nameList[46]])
         for i in database:
             writer.writerow(i)

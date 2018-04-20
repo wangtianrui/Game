@@ -1,9 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import mlab
-from matplotlib import rcParams
 import tensorflow as tf
-
+from numpy.linalg import cholesky
 #
 # x_ = ["wind", "cloud", "tur", "1", "sd"]
 # y_ = [1, 2, 3, 4, 6]
@@ -53,7 +51,35 @@ import ioUtils
 
 import os
 
-dir = os.walk("./data")
-for root, dirs, files in dir:
-    for i in dirs:
-        print(i)
+# array = np.random.normal(size=(50))
+# array = np.abs(array)
+# print(array)
+# x=[]
+# for i in range(50):
+#    x.append(i)
+# plt.bar(range(len(array)), array)
+# plt.show()
+
+
+sampleNo = 1000
+# 一维正态分布
+# 下面三种方式是等效的
+mu = 3
+sigma = 0.1
+np.random.seed(0)
+s = np.random.normal(mu, sigma, sampleNo)
+plt.subplot(141)
+plt.hist(s, 30, normed=True)
+
+np.random.seed(0)
+s = sigma * np.random.randn(sampleNo) + mu
+plt.subplot(142)
+plt.hist(s, 30, normed=True)
+
+np.random.seed(0)
+s = sigma * np.random.standard_normal(sampleNo) + mu
+plt.subplot(143)
+plt.hist(s, 30, normed=True)
+
+
+plt.show()

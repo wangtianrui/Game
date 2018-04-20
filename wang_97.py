@@ -7,10 +7,10 @@ import os
 from sklearn import preprocessing
 
 num_class = 2
-batch_size = 100
-train_path = r"wang_data.csv"
-test_path = r"wang_data_test5500.csv"
-test_path11 = r"wang_data_test200.csv"
+batch_size = 50
+train_path = r"./data/wang_data.csv"
+test_path = r"./data/wang_data_test5500.csv"
+test_path11 = r"./data/wang_data_test200.csv"
 learning_rate = 0.00000001
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -175,6 +175,9 @@ def cross_entropy(fc_result, label):
     return tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(logits=fc_result, labels=label))
 
 
+def loss(logits, label):
+    label = tf.one_hot(label, depth=num_class)
+
 
 def train():
     x_ = tf.placeholder(shape=[batch_size, size], dtype="float")
@@ -207,7 +210,6 @@ def train():
             else:
                 index = 200
                 test_x, test_y, test_index = makeData(test_data11, "11")
-
             # 标准化
             ss_x = StandardScaler()
             ss_y = StandardScaler()
@@ -230,12 +232,12 @@ def train():
             tp, tn, fp, fn = sess.run([tn_op, tp_op, fp_op, fn_op], feed_dict={x_: test_x, y_: test_y, keep_prob: 1})
             try:
                 tpr = float(tp) / (float(tp) + float(fn))
-                fpr = float(fp) / (float(tp) + float(fn))
-
+                # fpr = float(fp) / (float(tp) + float(fn))
+                recall = tpr
                 accuracy = (float(tp) + float(tn)) / (float(tp) + float(fp) + float(fn) + float(tn))
             except ZeroDivisionError:
                 accuracy = 0.0
-            recall = tpr
+
             precision = float(tp) / (float(tp) + float(fp))
             f2 = ((2 ** 2 + 1) * (precision * recall)) / ((2 ** 2) * precision + recall)
             lo = sess.run(loss, feed_dict={x_: x, y_: y, keep_prob: 1})
