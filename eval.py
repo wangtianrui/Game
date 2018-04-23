@@ -2,12 +2,15 @@ import tensorflow as tf
 import numpy as np
 import csv
 import input_data
-import wang_97
+import the_final_trian
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+import os
+from sklearn import preprocessing
 
 size = 35
 log_path = "./log2"
-test_path = "./data/wang_test.csv"
+test_path = "./data/wang_test_id.csv"
 
 
 def readData(path):
@@ -30,17 +33,22 @@ def readData(path):
 
 def makeData(data):
     x = []
+    ids = []
     for index in range(len(data)):
         row = data[index]
-        x.append(row)
-    return x
+        id = int(row[35])
+        x.append(row[:35])
+        ids.append(id)
+    return x , ids
 
 
 def eval_item(x):
-    logits, _, _ = wang_97.fc_2(x, 1)
+    logits, _, _ = the_final_trian.fc_2(x, 1)
     y = tf.argmax(logits, 1)
     return y
 
+
+count = 0
 
 if __name__ == "__main__":
     labels = []
@@ -50,11 +58,13 @@ if __name__ == "__main__":
     y_ = eval_item(x_)
     ckpt = tf.train.get_checkpoint_state(log_path)
     whole_list = readData(test_path)
-    x = makeData(whole_list)
+    x , ids= makeData(whole_list)
     # print(len(x[1]))
     saver = tf.train.Saver()
 
     with tf.Session() as sess:
+        ss_x = StandardScaler()
+        min_max_scaler = preprocessing.MinMaxScaler()
         coord = tf.train.Coordinator()  # 创建一个协调器，管理线程
         threads = tf.train.start_queue_runners(coord=coord)  # 启动QueueRunner, 此时文件名队列已经进队。
         ckpt = tf.train.get_checkpoint_state(log_path)
@@ -66,13 +76,23 @@ if __name__ == "__main__":
                     # image = sess.run(image_batch)
                     # print(image)
                     global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
-                    for temp in x:
-                        temp=[temp]
+                    print("模型为:", global_step)
+                    x = ss_x.fit_transform(x)
+                    x = min_max_scaler.fit_transform(x)
+                    print(len(x))
+                    for p in range(len(x)):
+                        temp = x[p]
+                        temp = [temp]
+                        id = ids[p]
                         y = sess.run(y_, feed_dict={x_: temp})
                         # plot_images(image_batch, label_batch)
-                        #print("模型为:", global_step)
-                        labels.append(y[0])
-                        #print(labels)
+                        # print(y[0])
+                        labels.append([id,y[0]])
+                        count += 1
+                        print(count)
+                        # print(labels)
+                        # print(labels)
+                    i += 1
             except tf.errors.OutOfRangeError:
                 print('done!')
             finally:
@@ -80,16 +100,22 @@ if __name__ == "__main__":
             coord.join(threads)
             sess.close()
 
-        with open(r"./data/test_label.csv", "w", newline="") as f:
+        with open(r"./data/01exchange.csv", "w", newline="") as f:
             # for i in database:
             #     for temp in database:
             #         f.write(temp)
             #         f.write("\t")
             #     f.write("\n")
             writer = csv.writer(f)
-            count = 0
+            # count = 0
             for i in labels:
-                writer.writerow(i)
-
-
+                print(i)
+                if i[1] == 0:
+                    i[1] = 1
+                    writer.writerow(i)
+                elif i[1] == 1:
+                    i[1] = 0
+                    writer.writerow(i)
+                else:
+                    print(i[1])
 

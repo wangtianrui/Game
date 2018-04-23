@@ -27,7 +27,7 @@ def pickle_load(path):
 
 def readData(datapath):
     whole_ist = pd.read_csv(datapath, encoding='ISO-8859-1')
-    whole_ist = whole_ist.fillna(0)
+    whole_ist = whole_ist.fillna(" ")
     return whole_ist
 
 
@@ -54,7 +54,7 @@ def getNameDict(wholeList):
 
 if __name__ == "__main__":
     maker_dicts = pickle_load("./data/makerDict.txt")
-    data_path = r"E:\python_programes\PingAnGame\data\test.csv"
+    data_path = r"E:\python_programes\PingAnGame\data\train.csv"
     whole_list = readData(data_path)
     kind_64_dict, kind_index, nameList = getNameDict(whole_list)
     # print(kind_64_dict)
@@ -98,18 +98,20 @@ if __name__ == "__main__":
     # 岗位
     temp = 0
     dict = maker_dicts[9]
-    try:
-        for row in range(len(whole_list)):
+
+    for row in range(len(whole_list)):
+        try:
             database[row].append(dict[whole_list[row][9]])
-    except KeyError:
-        database[row].append(1)
+        except KeyError:
+            database[row].append(1)
 
     # print(database)
     # 就业时间长短
     dict = {'6 years': 6, '2 years': 2, '8 years': 8, '4 years': 4, '5 years': 5, '< 1 year': 0, '7 years': 7,
-            0: 100, '9 years': 9, '10+ years': 10, '3 years': 3, '1 year': 1}
+            " ": 100, '9 years': 9, '10+ years': 10, '3 years': 3, '1 year': 1}
     for row in range(len(whole_list)):
         temp = dict[whole_list[row][10]]
+        print("lengh",temp)
         database[row].append(temp)
     # print(database)
     #    print(whole_list[row][10])
@@ -124,6 +126,7 @@ if __name__ == "__main__":
     dict = {"MORTGAGE": 0, "RENT": 50, "OWN": 100, "OTHER": 150, "ANY": 200, "NONE": 250}
     for row in range(len(whole_list)):
         temp = dict[whole_list[row][11]]
+        print("home",temp)
         database[row].append(temp)
     # 年收入
     for row in range(len(whole_list)):
@@ -168,21 +171,23 @@ if __name__ == "__main__":
     test = []
     dict = maker_dicts[19]
     temp = 0
-    try:
-        for row in range(len(whole_list)):
+
+    for row in range(len(whole_list)):
+        try:
             database[row].append(dict[whole_list[row][19]])
-    except KeyError:
-        database[row].append(1)
+        except KeyError:
+            database[row].append(1)
 
     # zip
     temp = 0
     dict = maker_dicts[20]
-    try:
-        for row in range(len(whole_list)):
+
+    for row in range(len(whole_list)):
+        try:
             database[row].append(dict[whole_list[row][20]])
-    except KeyError:
-        print(whole_list[row][20])
-        database[row].append(233)
+        except KeyError:
+            print(whole_list[row][20])
+            database[row].append(233)
 
     # add_states
     for row in range(len(whole_list)):
@@ -199,15 +204,17 @@ if __name__ == "__main__":
     # earliest
     dict = {'Sep': 9, 'Mar': 3, 'Dec': 12, 'Feb': 2, 'May': 5, 'Apr': 4, 'Jun': 6, 'Nov': 11, 'Aug': 8, 'Jan': 1,
             'Jul': 7, 'Oct': 10}
-    try:
-        for row in range(len(whole_list)):
-            temp = whole_list[row][23]
-            print(temp)
+
+    for row in range(len(whole_list)):
+        temp = whole_list[row][23]
+        print(temp)
+        try:
             yue = dict[temp[:3]]
             ri = int(temp[4:])
             database[row].append(int(str(yue) + str(ri)))
-    except TypeError:
-        database[row].append(0)
+        except KeyError:
+            database[row].append(0)
+            print("-----------------------")
 
     # pub_rec
     for row in range(len(whole_list)):
@@ -266,22 +273,23 @@ if __name__ == "__main__":
         temp = whole_list[row][41]
         database[row].append(temp)
     for row in range(len(whole_list)):
-        temp = whole_list[row][46]
-        database[row].append(temp)
-    for row in range(len(whole_list)):
         temp = whole_list[row][47]
         database[row].append(temp)
     for row in range(len(whole_list)):
-        temp = whole_list[row][59]
+        temp = whole_list[row][48]
+        database[row].append(temp)
+    for row in range(len(whole_list)):
+        temp = whole_list[row][60]
         database[row].append(temp)
     # print(set(test))
     for row in range(len(whole_list)):
         temp = whole_list[row][46]
+        print(temp)
         database[row].append(temp)
 
     # print(database)
     # print(maker_dicts)
-    with open(r"./data/wang_test.csv", "w", newline="") as f:
+    with open(r"./data/wang_data_all.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(
 
@@ -290,7 +298,7 @@ if __name__ == "__main__":
              nameList[20], nameList[21], nameList[22], nameList[23], nameList[25], nameList[26], nameList[27],
              nameList[28], nameList[29], nameList[30], nameList[32], nameList[34], nameList[35], nameList[36],
              nameList[37]
-                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[46], nameList[47], nameList[59]])
+                , nameList[38], nameList[39], nameList[40], nameList[41], nameList[47], nameList[48], nameList[60],nameList[46]])
         for i in database:
             writer.writerow(i)
 
