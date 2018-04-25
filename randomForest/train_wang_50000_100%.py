@@ -13,11 +13,11 @@ batch_size = 10000
 train_path = r"./data/train_ALL.csv"
 test_path = r"./data/test_ALL.csv"
 test_path11 = r"./data/test_ALL.csv"
-learning_rate = 0.0000001
+learning_rate = 0.00000001
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.7
 size = 62
-log_path = r"./log/"
+log_path = r"./log2/"
 
 
 def readData(path):
@@ -120,7 +120,7 @@ def train():
     y_test = tf.placeholder(shape=[10000, 1], dtype="int32")
 
     global_step = tf.Variable(0, name="global_step", trainable=False)
-    logits = fc(x_, keep_prob)
+    logits = fc_2(x_, keep_prob)
     logits_test = fc(x_test, keep_prob)
     loss = cross_entropy(logits, y_)
     # correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(y_, 1))
@@ -148,7 +148,7 @@ def train():
         x = ss_x.fit_transform(x)
         y = ss_y.fit_transform(y)
 
-        if i % 100 == 0 and i != 0:
+        if i % 200 == 0 and i != 0:
             save_path = os.path.join(log_path, "model.ckpt")
             saver.save(sess, save_path, global_step=i)
 
