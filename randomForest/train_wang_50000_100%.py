@@ -9,13 +9,12 @@ import copy
 import f2_score
 
 num_class = 2
-batch_size = 10000
-train_path = r"./data/train_ALL.csv"
-test_path = r"./data/test_ALL.csv"
-test_path11 = r"./data/test_ALL.csv"
+batch_size = 15000
+train_path = r"train_ALL.csv"
+
 learning_rate = 0.00000001
 config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.7
+config.gpu_options.allow_growth = True
 size = 62
 log_path = r"./log2/"
 
@@ -136,7 +135,7 @@ def train():
     test_data = readData(train_path)
     # test_data11 = readData(test_path11)
     # whole_data = sess.run(read_data)
-    for i in range(100000):
+    for i in range(200000):
         x, y = makeData(whole_data, "train")
         test_x, test_y = makeData(test_data, "train")
         min_max_scaler = preprocessing.MinMaxScaler()
